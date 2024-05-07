@@ -6,3 +6,5 @@ lazy val root = (project in file("."))
   .settings(
     name := "scala-project-rule-engine"
   )
+
+libraryDependencies += "org.postgresql" % "postgresql" % "42.7.3"

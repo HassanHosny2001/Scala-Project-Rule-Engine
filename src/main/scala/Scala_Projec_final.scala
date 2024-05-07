@@ -1,12 +1,15 @@
 import java.io.{File, FileOutputStream, PrintWriter}
-import java.security.Timestamp
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+//import java.security.Timestamp
+//import java.time.LocalDate
+//import java.time.format.DateTimeFormatter
 import scala.math.BigDecimal.RoundingMode.HALF_UP
 import scala.io.{BufferedSource, Source}
 
 import java.text.SimpleDateFormat
 import java.util.Date
+
+import java.sql.{Connection, DriverManager}
+
 
 object Scala_Projec_final extends App {
   //  val source: BufferedSource = Source.fromFile("C:\\Users\\Hassan Hosny\\IdeaProjects\\scala-project\\src\\main\\scala\\TRX1000.csv")
@@ -15,6 +18,7 @@ object Scala_Projec_final extends App {
   val lines = Source.fromFile("C:\\Users\\Hassan Hosny\\IdeaProjects\\scala-project-rule-engine\\src\\main\\scala\\TRX1000.csv").getLines().toList.tail
 
 
+//  case class Transaction(timestamp: String, productName: String, expiryDate: String, quantity: Int, unitPrice: Double, channel: String, paymentMethod: String)
 
   def parseDateFromExpiryDate(dateString: String): Date = {
     val dateFormatter = new SimpleDateFormat("mm/dd/yyyy")
@@ -151,10 +155,52 @@ object Scala_Projec_final extends App {
 //  val writer = new PrintWriter(new FileOutputStream(f,true))
 //  writer.println("Timestamp,Product Name,Expiry Date,Quantity,Unit Price,Channel,Payment Method,Discount,Final Price")
 //
-  discounts.foreach{case (timestamp, productName, expiryDate, quantity, untiPrice, channel, paymentMethod, finalDiscount, finalPrice) =>
-    println(s"$timestamp, $productName, $expiryDate, $quantity, $untiPrice, $channel, $paymentMethod, $finalDiscount, $finalPrice")
-  }
-//
+//  discounts.foreach{case (timestamp, productName, expiryDate, quantity, untiPrice, channel, paymentMethod, finalDiscount, finalPrice) =>
+//    writer.println(s"$timestamp, $productName, $expiryDate, $quantity, $untiPrice, $channel, $paymentMethod, $finalDiscount, $finalPrice")
+//  }
+////
 //  writer.close()
+
+  //  --------------------------------------------------- DataBase Connection ---------------------------------------------------
+
+  def getConnection(url: String, user: String, password: String): Connection = {
+    DriverManager.getConnection(url, user, password)
+  }
+
+  def insertData(timestamp: String, productName: String, expiryDate: String, quantity: Int, unitPrice: Double, channel: String, paymentMethod: String, discount: Double, finalPrice: Double, connection: Connection) = {
+    try{
+      val query = "INSERT INTO processed_orders (timestamp, productName, expiryDate, quantity, unitPrice, channel, paymentMethod, discount, finalPrice)" +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      val statement = connection.prepareStatement(query)
+      statement.setString(1, timestamp)
+      statement.setString(2, productName)
+      statement.setString(3, expiryDate)
+      statement.setInt(4, quantity)
+      statement.setDouble(5, unitPrice)
+      statement.setString(6, channel)
+      statement.setString(7, paymentMethod)
+      statement.setDouble(8, discount)
+      statement.setDouble(9, finalPrice)
+      statement.executeUpdate()
+    } catch {
+      case e: Exception => println(e)
+    } finally {
+
+    }
+
+//    connection.close()
+  }
+
+  // Establish connection to the database
+  val url = "jdbc:postgresql://localhost:5432/rule_engine_scala"
+  val username = "postgres"
+  val password = "admin"
+
+  val connector = new DatabaseConnector()
+  val connection = connector.connectToDB(url, username, password)
+
+  discounts.foreach { case (timestamp, productName, expiryDate, quantity, unitPrice, channel, paymentMethod, finalDiscount, finalPrice) =>
+    insertData(timestamp, productName, expiryDate, quantity, unitPrice, channel, paymentMethod, finalDiscount.toDouble, finalPrice.toDouble, connection)
+  }
 
 }
