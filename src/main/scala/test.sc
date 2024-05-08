@@ -1,0 +1,1 @@
+val logger = Logger("BaeldungLogger")

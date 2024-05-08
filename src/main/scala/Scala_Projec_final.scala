@@ -18,8 +18,6 @@ object Scala_Projec_final extends App {
   val lines = Source.fromFile("C:\\Users\\Hassan Hosny\\IdeaProjects\\scala-project-rule-engine\\src\\main\\scala\\TRX1000.csv").getLines().toList.tail
 
 
-//  case class Transaction(timestamp: String, productName: String, expiryDate: String, quantity: Int, unitPrice: Double, channel: String, paymentMethod: String)
-
   def parseDateFromExpiryDate(dateString: String): Date = {
     val dateFormatter = new SimpleDateFormat("mm/dd/yyyy")
     dateFormatter.parse(dateString)
@@ -184,8 +182,6 @@ object Scala_Projec_final extends App {
       statement.executeUpdate()
     } catch {
       case e: Exception => println(e)
-    } finally {
-
     }
 
 //    connection.close()
