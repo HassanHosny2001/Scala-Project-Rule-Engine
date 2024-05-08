@@ -1,49 +1,97 @@
 # Scala Project Documentation
 
-## Overview
-This Scala project is designed to process transactions stored in a CSV file, apply various qualifying and calculation rules to determine discounts, and then store the processed data in a database. It utilizes Scala's functional programming features and libraries for file handling, date manipulation, logging, and database connectivity.
+# Scala Project Documentation: Rule-Based Discount Calculation and Database Integration
 
-## Components
-### 1. Main Object: Scala_Projec_final
-- Entry point of the application.
-- Reads data from a CSV file, processes transactions, calculates discounts, and stores results in a database.
-- Contains functions for parsing dates, applying qualifying rules, and calculating discounts.
+## 1. Introduction:
 
-### 2. Libraries and Packages
-- **Logging Library**: `com.typesafe.scalalogging.Logger` for logging application events.
-- **File Manipulation**: `java.io.File`, `java.io.FileOutputStream`, `java.io.PrintWriter` for reading from and writing to files.
-- **Rounding Mode**: `scala.math.BigDecimal.RoundingMode.HALF_UP` for rounding numbers.
-- **Reading from File**: `scala.io.BufferedSource`, `scala.io.Source` for reading data from a file.
-- **Date Formatting**: `java.text.SimpleDateFormat`, `java.util.Date` for parsing and handling dates.
-- **Database Connectivity**: `java.sql.Connection`, `java.sql.DriverManager` for connecting to and interacting with a database.
+This Scala project is designed to process transactional data from a CSV file, apply various discount rules based on transactional attributes, and store the processed data into a PostgreSQL database. It leverages Scala for programming and JDBC for database connectivity.
 
-### 3. Qualifying Rules Functions
-- `lessThan30DaysRemaining`: Checks if there are less than 30 days remaining between two dates.
-- `isCheeseOrWine`: Checks if a product name contains "cheese" or "wine".
-- `isMarch23rd`: Checks if a transaction occurred on March 23rd.
-- `boughtMoreThan5`: Checks if quantity bought is more than 5.
-- `isAppChannel`: Checks if channel is "app".
-- `isVisa`: Checks if payment method is "visa".
+## 2. Project Structure:
 
-### 4. Calculation Rules Functions
-- `calculateDaysRemainingDiscount`: Calculates discount based on remaining days.
-- `calculateProductDiscount`: Calculates discount based on product name.
-- `calculateMarch23Discount`: Calculates discount based on transaction date (March 23rd).
-- `calculateQuantityDiscount`: Calculates discount based on quantity bought.
-- `calculateQuantityDiscountRounded`: Calculates rounded quantity discount.
-- `calculateVisaDiscount`: Calculates visa discount.
+### 2.1. Main Scala Object ***(Scala_Projec_final)***:
 
-### 5. Reading from File and Processing
-- Reads data from a CSV file, maps input data to required format, and calculates discounts for each transaction.
+- **Description:**
+    - Serves as the main entry point of the application.
+    - Orchestrates data processing, discount calculation, file handling, and database integration.
 
-### 6. Database Connection and Insertion
-- Establishes a connection to the database using JDBC.
-- Inserts processed data into the database.
+- **Initialization:**
+    - Initializes a logger to record application events.
+    - Logs the start of the application.
 
-## Usage
-1. Ensure Scala and necessary dependencies are installed.
-2. Update file paths and database connection details as per your environment.
-3. Run the Scala project to process transactions and store results in the database.
+- **Date Parsing Functions:**
+    - Provides functions to parse dates from different formats used in the transactional data.
 
-## Conclusion
-This Scala project demonstrates how functional programming concepts can be used to implement a transaction processing system efficiently. By applying qualifying and calculation rules, it determines discounts for each transaction and maintains data integrity by storing processed results in a database.
+- **Qualifying Rules Functions:**
+    - Implements functions to evaluate various transaction attributes and determine if they meet certain criteria.
+
+- **Calculation Rules Functions:**
+    - Calculates discounts based on different rules such as remaining days, product type, transaction date, quantity, payment method, and channel.
+
+- **File Processing:**
+    - Reads transactional data from a CSV file and maps it to the required format.
+    - Applies discount calculation rules to each transaction.
+    - Logs transaction processing details.
+
+- **Database Integration:**
+    - Establishes a connection to the PostgreSQL database using JDBC.
+    - Inserts processed transaction data into the database.
+    - Logs database connectivity events and data insertion status.
+
+- **File Handling:**
+    - Manages input and output file paths for transactional data.
+    - Reads data from the input CSV file and writes processed data to a new CSV file.
+
+- **Logging:**
+    - Utilizes the Scala Logging library to log informational and error messages.
+    - Logs application events, transaction details, and errors during date parsing, file handling, and database operations.
+
+### 2.2. DatabaseConnector Class:
+
+- **Description:**
+    - Handles database connectivity setup and teardown.
+    - Provides methods to establish a connection to the PostgreSQL database.
+
+- **Database Connection Setup:**
+    - Defines the database URL, username, and password for establishing a connection.
+
+- **Connection Method:**
+    - Implements a method to connect to the database using the provided credentials.
+    - Returns a connection object upon successful connection.
+
+## 3. Implementation Details:
+
+### 3.1. Discount Calculation Functions:
+
+- **Description:**
+    - Parses dates from strings representing expiry dates and timestamps.
+    - Implements rules functions to calculate discounts based on transaction attributes.
+
+### 3.2. File Processing:
+
+- **Description:**
+    - Reads transactional data from a CSV file.
+    - Maps input data to the required format.
+    - Applies discount calculation rules to each transaction.
+    - Logs transaction processing details.
+
+### 3.3. Database Integration:
+
+- **Description:**
+    - Establishes a connection to the PostgreSQL database using JDBC.
+    - Inserts processed transaction data into the database.
+    - Logs database connectivity events and data insertion status.
+
+## 4. File Handling:
+
+- **Description:**
+    - Defines input and output file paths for transactional data.
+    - Reads transactional data from the input CSV file.
+    - Writes processed data to a new CSV file.
+
+## 5. Logging:
+
+- **Description:**
+    - Utilizes the Scala Logging library for logging.
+    - Logs informational messages for application events such as start and completion.
+    - Logs transaction processing details.
+    - Logs error messages for exceptions during date parsing, file handling, and database operations.
