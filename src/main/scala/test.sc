@@ -1,1 +1,0 @@
-val logger = Logger("BaeldungLogger")
