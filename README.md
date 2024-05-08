@@ -113,7 +113,7 @@ scala Scala_Projec_final
 4. Create the necessary tables in the PostgreSQL database and update the connection information.
 5. Add CSV files containing transaction data to the `raw_data` folder.
 6. The program will automatically process the new file, apply discount rules, and store the results in the database.
-7. Events will be logged using SLF4J with Logback configuration will automatically saved as `mylog.log` in logs directory.
+7. Events will be logged using SLF4J with Logback configuration will automatically saved as `mylog.log` in `logs` directory.
 8. Output data CSV file will be created in the `output_data` directory.
 
 # SnapShots
