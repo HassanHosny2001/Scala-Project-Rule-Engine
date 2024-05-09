@@ -14,16 +14,16 @@ The Scala Real-Time Rule Engine monitors and processes CSV files as they are pus
 
 ## Discount Rules
 
-The project applies the following discount rules to transaction data:
+| Qualifying Rule                                                                                                      | Calculation Rule                                                                                                                                                                                                    |
+|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Less than 30 days remaining for the product to expire (from the day of transaction, i.e. timestamp)                  | If 29 days remaining: 1% Discount <br> If 28 days remaining: 2% Discount <br> If 27 days remaining: 3% Discount <br> etc ...                                                                                        |
+| Cheese and wine products are on sale                                                                                 | Cheese: 10% Discount <br> Wine: 5% Discount                                                                                                                                                                         |
+| Products that are sold on 23rd of March (special day) has a special discount!                                        | 50% Discount                                                                                                                                                                                                        |
+| The orders has more than 5 of the same products                                                                      | 6-9 Units: 5% Discount <br> 10-14 Units: 7% Discount <br> More than 15 Units: 10% Discount                                                                                                                          |
+| Sales that are made through the App will have a special discount                                                     | quantity rounded up to the nearest muliple of 5. <br> Ex: if quantity: 1, 2, 3, 4, 5 ‐> discount 5% <br> if quantity 6, 7, 8, 9, 10 ‐> discount 10% <br> if quantity 11, 12, 13, 14, 15 ‐> discount 15% <br> etc... |
+| Sales that are made using Visa Cards qualify to a minor discount                                                     | 5% Discount                                                                                                                                                                                                         |
 
-- **Expiration Date Discount**: Discounts are applied based on the number of days remaining between the purchase date and the expiration date.
-- **Product Category Discount**: Discounts are applied based on the product category (e.g., "Cheese" or "Wine").
-- **Specific Day of Month Discount**: Special discounts are applied to purchases made on specific days of the month.
-- **Quantity Discount**: Discounts are applied based on the quantity of products purchased.
-- **Purchasing Channel Discount**: Discounts are applied based on the purchasing channel (e.g., "App").
-- **Payment Method Discount**: Discounts are applied based on the payment method (e.g., "Visa").
-
-## Main Rules
+## Extra Rules
 
 - Transactions not qualifying for any discount receive a 0% discount.
 - Transactions qualifying for multiple discounts receive the top two discounts, averaged.
@@ -84,7 +84,6 @@ The project relies on the following dependencies:
   <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
   </encoder>
   </appender>
-
   <root level="debug">
     <appender-ref ref="FILE"/>
   </root>
